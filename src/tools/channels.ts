@@ -590,7 +590,7 @@ export function registerChannelTools(
     "modify_channel",
     {
       title: "Modify Channel Settings",
-      description: "Update channel name, topic, slowmode, or other settings",
+      description: "Update channel name, topic, slowmode, parent category, or other settings",
       inputSchema: {
         channelId: z.string().describe("Channel ID to modify"),
         name: z
@@ -624,6 +624,7 @@ export function registerChannelTools(
           .object({
             id: z.string(),
             name: z.string(),
+            parentId: z.string().nullable().optional(),
           })
           .optional(),
         error: z.string().optional(),
@@ -664,6 +665,7 @@ export function registerChannelTools(
           channel: {
             id: updatedChannel.id,
             name: updatedChannel.name,
+            parentId: updatedChannel.parentId ?? null,
           },
         };
 
