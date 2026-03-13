@@ -608,6 +608,11 @@ export function registerChannelTools(
           .max(21600)
           .optional()
           .describe("Slowmode delay in seconds (0-21600)"),
+        parent: z
+          .string()
+          .nullable()
+          .optional()
+          .describe("ID of the category channel to move this channel into. Use null to remove from category."),
         reason: z
           .string()
           .optional()
@@ -624,7 +629,7 @@ export function registerChannelTools(
         error: z.string().optional(),
       },
     },
-    async ({ channelId, name, topic, nsfw, slowmode, reason }) => {
+    async ({ channelId, name, topic, nsfw, slowmode, parent, reason }) => {
       try {
         const client = discordManager.getClient();
 
@@ -649,6 +654,7 @@ export function registerChannelTools(
         if (topic !== undefined) updateOptions.topic = topic;
         if (nsfw !== undefined) updateOptions.nsfw = nsfw;
         if (slowmode !== undefined) updateOptions.rateLimitPerUser = slowmode;
+        if (parent !== undefined) updateOptions.parent = parent;
         if (reason !== undefined) updateOptions.reason = reason;
 
         const updatedChannel = await (channel as any).edit(updateOptions);
